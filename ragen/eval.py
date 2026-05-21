@@ -18,11 +18,13 @@ def main(config):
 	os.environ["VLLM_WORKER_MULTIPROC_METHOD"] = "spawn"
 	os.environ["CUDA_VISIBLE_DEVICES"] = str(config.system.CUDA_VISIBLE_DEVICES)
 	tokenizer = AutoTokenizer.from_pretrained(config.actor_rollout_ref.model.path)
+	eos_token_id = tokenizer.eos_token_id if tokenizer.eos_token_id is not None else 151645
+	pad_token_id = tokenizer.pad_token_id if tokenizer.pad_token_id is not None else eos_token_id
 	actor_wg = VllmWrapperWg(config, tokenizer)
 	proxy = LLMAgentProxy(config, actor_wg, tokenizer)
 	import time
 	start_time = time.time()
-	rollouts = proxy.rollout(DataProto(batch=None, non_tensor_batch=None, meta_info={'eos_token_id': 151645, 'pad_token_id': 151643, 'recompute_log_prob': False, 'do_sample': _get_rollout_do_sample(config), 'validate': True}), val=True)
+	rollouts = proxy.rollout(DataProto(batch=None, non_tensor_batch=None, meta_info={'eos_token_id': eos_token_id, 'pad_token_id': pad_token_id, 'recompute_log_prob': False, 'do_sample': _get_rollout_do_sample(config), 'validate': True}), val=True)
 	end_time = time.time()
 	print(f'rollout time: {end_time - start_time} seconds')
 	# print rollout rewards from the rm_scores

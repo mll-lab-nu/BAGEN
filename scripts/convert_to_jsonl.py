@@ -55,6 +55,16 @@ def extract_openai_messages(history: List[Dict]) -> List[Dict[str, str]]:
     return messages
 
 
+def infer_success(history: List[Dict], total_reward: float) -> bool:
+    for turn in history:
+        info = turn.get("info") or {}
+        if bool(info.get("success", False)):
+            return True
+        if bool(turn.get("success", False)):
+            return True
+    return bool(total_reward > 0)
+
+
 def rollout_to_openai_format(item: Any, index: int) -> Dict[str, Any]:
     """
     Convert a single rollout to OpenAI-compatible format.
@@ -94,13 +104,14 @@ def rollout_to_openai_format(item: Any, index: int) -> Dict[str, Any]:
         "group_id": int(ntb.get('group_ids', 0)),
         "num_turns": len([h for h in history if 'actions' in h]),
         "total_reward": total_reward,
+        "success": infer_success(history, total_reward),
     }
 
     # Add metrics if available
     if 'metrics' in ntb:
         metrics = ntb['metrics']
         if isinstance(metrics, dict):
-            metadata['success'] = metrics.get('success', False)
+            metadata['success'] = bool(metrics.get('success', metadata['success']))
             metadata.update({k: v for k, v in metrics.items() if k != 'success'})
 
     # Add entropy info if available

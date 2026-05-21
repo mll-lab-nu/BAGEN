@@ -610,6 +610,15 @@ def _save_as_jsonl(rollouts: DataProto, save_path: str) -> None:
     """Save rollouts in OpenAI-compatible JSONL format."""
     import json
 
+    def _is_success_from_history(history, total_reward):
+        for turn in history:
+            info = turn.get("info") or {}
+            if bool(info.get("success", False)):
+                return True
+            if bool(turn.get("success", False)):
+                return True
+        return bool(total_reward > 0)
+
     def extract_openai_messages(history):
         messages = []
         for i, turn in enumerate(history):
@@ -655,10 +664,12 @@ def _save_as_jsonl(rollouts: DataProto, save_path: str) -> None:
                     "total_reward": total_reward,
                 }
 
+                metadata['success'] = _is_success_from_history(history, total_reward)
+
                 if 'metrics' in ntb:
                     metrics = ntb['metrics']
                     if isinstance(metrics, dict):
-                        metadata['success'] = metrics.get('success', False)
+                        metadata['success'] = bool(metrics.get('success', metadata['success']))
                         metadata.update({k: v for k, v in metrics.items() if k != 'success'})
 
                 if 'entropys' in ntb:
@@ -688,6 +699,8 @@ def main(config):
     os.environ["VLLM_WORKER_MULTIPROC_METHOD"] = "spawn"
     os.environ["CUDA_VISIBLE_DEVICES"] = str(config.system.CUDA_VISIBLE_DEVICES)
     tokenizer = AutoTokenizer.from_pretrained(config.actor_rollout_ref.model.path)
+    eos_token_id = tokenizer.eos_token_id if tokenizer.eos_token_id is not None else 151645
+    pad_token_id = tokenizer.pad_token_id if tokenizer.pad_token_id is not None else eos_token_id
     actor_wg = VllmWrapperWg(config, tokenizer)
     proxy = LLMAgentProxy(config, actor_wg, tokenizer)
     import time
@@ -697,8 +710,8 @@ def main(config):
             batch=None,
             non_tensor_batch=None,
             meta_info={
-                "eos_token_id": 151645,
-                "pad_token_id": 151643,
+                "eos_token_id": eos_token_id,
+                "pad_token_id": pad_token_id,
                 "recompute_log_prob": False,
                 "do_sample": _get_rollout_do_sample(config),
                 "validate": True,
