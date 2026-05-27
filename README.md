@@ -17,6 +17,14 @@
   <img src="https://img.shields.io/badge/API_Eval-OpenAI%20%7C%20Anthropic%20%7C%20OpenRouter%20%7C%20Gemini-7C3AED?style=for-the-badge" alt="API evaluation providers">
 </p>
 
+<p align="center">
+  <img src="public/fig1.png" width="900px" alt="BAGEN overview">
+</p>
+<p align="center" style="font-size: 15px; max-width: 900px; margin: 0 auto;">
+  <em>BAGEN evaluates whether agents can estimate future budget consumption
+  from partial rollouts across token and multi-resource settings.</em>
+</p>
+
 ## News
 
 
@@ -48,6 +56,15 @@ The benchmark is organized as a two-pass pipeline:
    model to output a remaining-budget interval or `impossible`.
 3. **Budget-RL training.** Convert estimation data into SFT/GRPO datasets and
    train a budget estimator with local-model rollout support.
+
+## Benchmark Summary
+
+<p align="center">
+  <img src="public/combined_external_internal_all_benchmarks.png" width="900px" alt="BAGEN benchmark results across external and internal tasks">
+</p>
+<p align="center" style="font-size: 15px; max-width: 900px; margin: 0 auto;">
+  <em>Budget-estimation results across external and internal benchmarks.</em>
+</p>
 
 ## Getting Started
 
