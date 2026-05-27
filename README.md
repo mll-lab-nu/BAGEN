@@ -1,56 +1,72 @@
-# BAGEN
+<h1 align="center">BAGEN</h1>
+<h3 align="center"><em>Budget-aware evaluation and training for long-horizon agents.</em></h3>
 
-BAGEN is the codebase for experiments around progressive budget estimation in
-long-horizon foundation-model agents.
+<p align="center">
+  <strong>BAGEN</strong> studies whether foundation-model agents know what they
+  will spend before they finish a task.
+</p>
+<p align="center">
+  It provides rollout logging, offline budget-estimation benchmarks, and SFT/RL
+  utilities for training budget-aware agents.
+</p>
 
-BAGEN studies whether an agent can estimate, during execution, how
-much remaining budget is needed to finish a task and when the task has become
-infeasible. It builds on RAGEN/verl and adds budget-aware rollout logging,
-offline replay environments, evaluation scripts, and SFT/RL training utilities.
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.12">
+  <img src="https://img.shields.io/badge/Built_on-RAGEN%20%2B%20verl-111827?style=for-the-badge" alt="Built on RAGEN and verl">
+  <img src="https://img.shields.io/badge/Tasks-Sokoban%20%7C%20Search--R1%20%7C%20SWE--bench%20%7C%20Warehouse-0F766E?style=for-the-badge" alt="Tasks">
+  <img src="https://img.shields.io/badge/API_Eval-OpenAI%20%7C%20Anthropic%20%7C%20OpenRouter%20%7C%20Gemini-7C3AED?style=for-the-badge" alt="API evaluation providers">
+</p>
 
-The Python package directory is still named `ragen` because BAGEN is implemented
-as an extension of the RAGEN framework. Keeping the import path stable avoids
-breaking Hydra configs, wrappers, and existing training code.
+## News
 
-## Paper Scope
+- **2026.05.27.** The project has been renamed to **BAGEN** for public release.
+- **2026.05.27.** Public cleanup removed private manuscript drafts, generated figures, local logs, and unrelated legacy scripts.
+- **2026.05.27.** Core budget-estimation scripts are kept for Sokoban, Search-R1, SWE-bench-style coding, Warehouse, and Budget-RL training.
 
-The manuscript used as the release reference is:
+## About
 
-> Towards Budget-Aware Agents: Do Agents Know What They Will Spend?
+BAGEN targets progressive budget estimation in long-horizon agent rollouts. At
+each prefix of an interaction, a model is asked to estimate whether the agent can
+still finish within the remaining resource budget and, when feasible, how much
+budget is needed.
 
-The public-facing code in this repository is organized around the paper's four
-main settings:
+The current public code focuses on four settings:
 
-- Sokoban token-budget estimation
-- Search-R1 token-budget estimation
-- SWE-bench-style coding token-budget estimation
-- Warehouse multi-resource budget estimation
+- **Sokoban:** token-budget estimation over interactive puzzle rollouts.
+- **Search-R1:** token-budget estimation for search-agent trajectories.
+- **SWE-bench-style coding:** token-budget estimation over coding-agent logs.
+- **Warehouse:** multi-resource estimation over time, storage occupancy, and cumulative cost.
 
-The repository also contains legacy RAGEN components because BAGEN
-experiments are implemented as extensions to that framework. Legacy RAGEN
-experiments such as rollout filtering, gradient diagnostics, and old RAGEN paper
-assets are not part of the budget-awareness paper's main experimental claim.
+BAGEN builds on the RAGEN/verl codebase. The Python package directory is still
+named `ragen` to preserve import paths, Hydra configs, wrappers, and training
+code compatibility.
+
+## Method
+
+The benchmark is organized as a two-pass pipeline:
+
+1. **Original rollout collection.** Run a task model in an environment and save
+   both rollout artifacts and dialogue JSON logs.
+2. **Offline budget estimation.** Replay rollout prefixes and ask an evaluator
+   model to output a remaining-budget interval or `impossible`.
+3. **Budget-RL training.** Convert estimation data into SFT/GRPO datasets and
+   train a budget estimator with local-model rollout support.
 
 ## Repository Map
 
 | Path | Purpose |
 | --- | --- |
-| `config/base.yaml`, `config/evaluate_api_llm.yaml` | Budget-control flags under `agent_proxy`, including estimation, compliance, and mixed-budget training modes. |
-| `ragen/wrapper/ctx_manager_wrapper.py`, `ragen/llm_agent/ctx_manager.py` | Prompt injection and dialogue logging for budget-aware rollouts. |
-| `ragen/wrapper/es_manager_wrapper.py`, `ragen/llm_agent/es_manager.py` | Budget sampling and reward shaping for turn, token, and tool-call budgets. |
-| `ragen/env/token_estimation` | Offline token-budget estimation environment for Sokoban, Search-R1, SWE-bench-style dialogue logs, and similar rollouts. |
-| `ragen/env/money_estimation` | Offline warehouse-budget estimation environment for time, warehouse item-weeks, and cumulative cost. |
-| `scripts/evaluation-scripts/origin` | First-pass scripts for collecting task rollouts and dialogue JSON logs. |
-| `scripts/evaluation-scripts/eval` | Second-pass budget-estimation scripts that call API models on saved rollouts. |
-| `scripts/budget-estimation-benchmark` | Python entry points for token and money estimation replay. |
-| `scripts/budget-rl` | SFT and GRPO utilities for training budget-estimation models. |
+| `config/base.yaml`, `config/evaluate_api_llm.yaml` | Budget-control flags under `agent_proxy`. |
+| `ragen/wrapper/ctx_manager_wrapper.py` | Prompt injection and dialogue logging for budget-aware rollouts. |
+| `ragen/wrapper/es_manager_wrapper.py` | Budget sampling and reward shaping for turn, token, and tool-call budgets. |
+| `ragen/env/token_estimation` | Offline token-budget estimation environment. |
+| `ragen/env/money_estimation` | Offline Warehouse multi-resource estimation environment. |
+| `scripts/evaluation-scripts/origin` | First-pass rollout collection scripts. |
+| `scripts/evaluation-scripts/eval` | Second-pass API budget-estimation scripts. |
+| `scripts/budget-estimation-benchmark` | Python runners for token and money estimation replay. |
+| `scripts/budget-rl` | SFT and GRPO utilities for budget-estimator training. |
 
-Large rollout logs, API outputs, local search indices, model checkpoints,
-Weights & Biases runs, and manuscript PDFs are intentionally ignored by Git.
-
-## Setup
-
-Clone with submodules:
+## Getting Started
 
 ```bash
 git clone --recurse-submodules <repo-url>
@@ -61,7 +77,7 @@ bash scripts/setup_bagen.sh
 export PYTHONPATH="$PWD:$PWD/verl"
 ```
 
-For Search-R1 retrieval experiments, download/build the search index separately:
+For Search-R1 retrieval experiments, download or build the search index:
 
 ```bash
 python scripts/download_search_index.py
@@ -81,15 +97,11 @@ export TOGETHER_API_KEY=...
 export DEEPSEEK_API_KEY=...
 ```
 
-Set `DRY_RUN=1` on eval scripts to build prompts and validate inputs without
-calling an API.
+Set `DRY_RUN=1` to build prompts and validate inputs without calling an API.
 
 ## Collect Original Rollouts
 
-The `origin` scripts run a task model and write both rollout pickle files and
-dialogue logs. The dialogue JSON is the input to the offline estimation replay.
-
-Sokoban:
+**Sokoban**
 
 ```bash
 MODEL_NAME=OpenAI-5.2-Instant \
@@ -98,7 +110,7 @@ OUTPUT_DIR="$PWD/results/estimation/sokoban-origin-gpt5.2-instant-128-main" \
 bash scripts/evaluation-scripts/origin/sokoban.sh
 ```
 
-Search-R1 requires a retrieval server unless `SEARCH_MOCK_MODE=True`:
+**Search-R1**
 
 ```bash
 bash scripts/evaluation-scripts/origin/searchr1_server.sh start
@@ -109,14 +121,11 @@ bash scripts/evaluation-scripts/origin/searchr1.sh
 ```
 
 Use `status`, `logs`, or `stop` with `searchr1_server.sh` to inspect or manage
-the server.
+the retrieval server.
 
-## Run Offline Budget Estimation
+## Run Budget Estimation
 
-The second-pass scripts replay saved prefixes and ask a model to output either a
-remaining-budget interval or `impossible`.
-
-Sokoban:
+**Sokoban**
 
 ```bash
 INPUT_JSON="$PWD/results/estimation/sokoban-origin-gpt5.2-instant-128-main/sokoban_api_eval_estimation_eval_estimation_dialogues.json" \
@@ -125,7 +134,7 @@ MAX_CONTEXT_WINDOW_TOKENS=2500 \
 bash scripts/evaluation-scripts/eval/sokoban.sh
 ```
 
-Search-R1:
+**Search-R1**
 
 ```bash
 INPUT_JSON="$PWD/results/estimation/searchr1-origin-gpt5.2-instant-128-main/search_r1_api_eval_estimation_eval_estimation_dialogues.json" \
@@ -134,7 +143,7 @@ MAX_CONTEXT_WINDOW_TOKENS=3500 \
 bash scripts/evaluation-scripts/eval/searchr1.sh
 ```
 
-SWE-bench-style coding:
+**SWE-bench-style coding**
 
 ```bash
 INPUT_SOURCE=/path/to/swebench-origin-rollouts \
@@ -142,7 +151,7 @@ MODEL_NAME=Claude-Opus-4.7-low-thinking \
 bash scripts/evaluation-scripts/eval/swebench.sh
 ```
 
-Warehouse:
+**Warehouse**
 
 ```bash
 INPUT_SOURCE=/path/to/warehouse_rollouts.json \
@@ -151,7 +160,7 @@ BUDGET_PRESET=half-reachable \
 bash scripts/evaluation-scripts/eval/warehouse.sh
 ```
 
-All eval scripts write:
+Each eval script writes:
 
 - `OUTPUT_JSON`: predictions, ground truth, API usage, and aggregate metrics
 - `TEMP_JSON`: prompt/target pairs for inspection
@@ -165,15 +174,15 @@ bash scripts/evaluation-scripts/eval/sokoban.sh
 
 ## Budget-RL Training
 
-The SFT/GRPO pipeline for training a budget estimator is under
+The SFT/GRPO pipeline for training a budget estimator lives under
 `scripts/budget-rl`.
 
 ```bash
 DRY_RUN=1 bash scripts/budget-rl/run_budget_rl_pipeline.sh prepare,sft,rl
 ```
 
-Then remove `DRY_RUN=1` and set the model, data, GPU, and checkpoint variables
-for a real run:
+For a real run, remove `DRY_RUN=1` and set the model, data, GPU, and checkpoint
+variables:
 
 ```bash
 TASK=sokoban \
@@ -190,12 +199,16 @@ Do not commit local experiment outputs or private manuscript drafts. The release
 expects these to stay outside Git:
 
 - `results/`, `logs/`, `wandb/`, `outputs/`, `model_saving/`
-- `data/`, `search_data/`, downloaded search indices, and raw warehouse data
+- `data/`, `search_data/`, downloaded search indices, and raw Warehouse data
 - local PDFs such as `Budget_NeurIPS_2026*.pdf`
 - API keys, `.env` files, and machine-specific absolute paths
 
 The Warehouse data used by the paper should be released only in anonymized form.
 Do not add raw enterprise records to this repository.
+
+## Citation
+
+Citation information will be added with the paper release.
 
 ## License
 
