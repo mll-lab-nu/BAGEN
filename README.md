@@ -11,10 +11,10 @@
 </p>
 
 <p align="center">
-  <a href="./bagen.pdf"><img src="https://img.shields.io/badge/Paper-PDF-B31B1B?style=for-the-badge&logoColor=white" alt="Paper"></a>
-  <a href="https://ragen-ai.github.io/bagen/"><img src="https://img.shields.io/badge/Homepage-BAGEN-1F6FEB?style=for-the-badge&logoColor=white" alt="Homepage"></a>
-  <img src="https://img.shields.io/badge/Post-Coming%20Soon-111827?style=for-the-badge&logoColor=white" alt="Post">
-  <a href="https://huggingface.co/datasets/MLL-Lab/BAGEN"><img src="https://img.shields.io/badge/Rollout%20Results-HuggingFace-0F766E?style=for-the-badge&logoColor=white" alt="Rollout Results"></a>
+  <a href="./bagen.pdf"><img src="https://img.shields.io/badge/Paper-B31B1B?style=for-the-badge&logoColor=white" alt="Paper"></a>
+  <a href="https://ragen-ai.github.io/bagen/"><img src="https://img.shields.io/badge/Homepage-1F6FEB?style=for-the-badge&logoColor=white" alt="Homepage"></a>
+  <img src="https://img.shields.io/badge/Post-6B7280?style=for-the-badge&logoColor=white" alt="Post">
+  <a href="https://huggingface.co/datasets/MLL-Lab/BAGEN"><img src="https://img.shields.io/badge/Rollout%20Results-0F766E?style=for-the-badge&logoColor=white" alt="Rollout Results"></a>
 </p>
 
 <p align="center">
