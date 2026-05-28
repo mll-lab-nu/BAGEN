@@ -47,6 +47,38 @@ BAGEN builds on the RAGEN/verl codebase. The Python package directory is still
 named `ragen` to preserve import paths, Hydra configs, wrappers, and training
 code compatibility.
 
+## Dataset
+
+The public BAGEN dataset contains the artifacts used to build and evaluate the
+budget-estimation benchmark. It is intended for reproducing the reported
+offline evaluation results, inspecting agent rollouts, and preparing SFT/GRPO
+training data for budget-aware agents.
+
+The hosted dataset is available at:
+
+- Hugging Face: `https://huggingface.co/datasets/MLL-Lab/BAGEN`
+
+The dataset is organized into two main directories:
+
+- `origin/`: original rollout artifacts from Sokoban, Search-R1,
+  SWE-bench-style coding, and anonymized Warehouse-style tasks. These files are
+  the source trajectories, dialogues, and logs used to construct prefix
+  budget-estimation prompts.
+- `estimation/`: derived offline budget-estimation files, including prompt/target
+  pairs, evaluator outputs, model predictions, and aggregate records used for
+  benchmark scoring or downstream budget-RL data preparation.
+
+On the project machine, the current staging copy is:
+
+- `/u/ylin30/database/origin`
+- `/u/ylin30/database/estimation`
+
+The Hugging Face repository also includes `manifest.jsonl`, a file index with
+paths, sizes, and direct download URLs for the uploaded artifacts. Local
+environment/training datasets used by the codebase live under `data/`, but large
+benchmark artifacts should remain outside Git and be downloaded from the
+dataset repository when needed.
+
 ## Method
 
 The benchmark is organized as a two-pass pipeline:
