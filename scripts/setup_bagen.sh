@@ -44,7 +44,10 @@ ensure_conda() {
 }
 
 validate_repo_root() {
-    if [[ ! -d "${PROJECT_ROOT}/verl" ]]; then
+    # Check for real repo files (setup.py + ragen/). The verl/ dir is a submodule
+    # placeholder that exists even before submodules are initialized, so it is not
+    # a reliable marker of a valid checkout.
+    if [[ ! -f "${PROJECT_ROOT}/setup.py" || ! -d "${PROJECT_ROOT}/ragen" ]]; then
         echo "Could not find the BAGEN repository root from ${SCRIPT_DIR}." >&2
         exit 1
     fi
@@ -157,9 +160,9 @@ main() {
     print_step "Installing BAGEN in editable mode"
     python -m pip install -e . --no-deps
 
-    print_step "Installing verl dependencies for v0.6.1"
+    print_step "Installing verl dependencies (vllm 0.11.0; Megatron and SGLang disabled)"
     pushd verl >/dev/null
-    USE_MEGATRON=0 bash scripts/install_vllm_sglang_mcore.sh
+    USE_MEGATRON=0 USE_SGLANG=0 bash scripts/install_vllm_sglang_mcore.sh
     python -m pip install --no-deps -e .
     popd >/dev/null
 

@@ -1,0 +1,58 @@
+[
+  {
+    "env_id": 0,
+    "absolute_env_id": 0,
+    "rollout_success": false,
+    "turns": [
+      {
+        "turn_idx": 0,
+        "success": false,
+        "user_prompt": "You are playing Sokoban. The grid is 6x6. Push the box onto the target. Current state:\n######\n#@   #\n# $  #\n#  . #\n#    #\n######\nChoose an action.",
+        "parsed_response": "<think>The box is below me, target is below-right. I should move down to approach.</think><answer>Down</answer>",
+        "messages": [
+          {"role": "system", "content": "You are a Sokoban-solving agent. Respond with one action."},
+          {"role": "user", "content": "Current state:\n######\n#@   #\n# $  #\n#  . #\n#    #\n######"}
+        ],
+        "input_tokens": 320,
+        "output_tokens": 40,
+        "total_tokens": 360
+      },
+      {
+        "turn_idx": 1,
+        "success": false,
+        "user_prompt": "State after Down:\n######\n#    #\n#@$  #\n#  . #\n#    #\n######\nChoose an action.",
+        "parsed_response": "<think>Now I can push the box right toward the target column.</think><answer>Right</answer>",
+        "messages": [
+          {"role": "user", "content": "State after Down:\n######\n#    #\n#@$  #\n#  . #\n#    #\n######"}
+        ],
+        "input_tokens": 410,
+        "output_tokens": 38,
+        "total_tokens": 448
+      },
+      {
+        "turn_idx": 2,
+        "success": false,
+        "user_prompt": "State after Right:\n######\n#    #\n# @$ #\n#  . #\n#    #\n######\nChoose an action.",
+        "parsed_response": "<think>Push box down onto the target.</think><answer>Down</answer>",
+        "messages": [
+          {"role": "user", "content": "State after Right:\n######\n#    #\n# @$ #\n#  . #\n#    #\n######"}
+        ],
+        "input_tokens": 505,
+        "output_tokens": 44,
+        "total_tokens": 549
+      },
+      {
+        "turn_idx": 3,
+        "success": true,
+        "user_prompt": "State after Down:\n######\n#    #\n#  @ #\n#  * #\n#    #\n######\nChoose an action.",
+        "parsed_response": "<think>Box is on target. Puzzle solved.</think><answer>Done</answer>",
+        "messages": [
+          {"role": "user", "content": "State after Down:\n######\n#    #\n#  @ #\n#  * #\n#    #\n######"}
+        ],
+        "input_tokens": 600,
+        "output_tokens": 30,
+        "total_tokens": 630
+      }
+    ]
+  }
+]
