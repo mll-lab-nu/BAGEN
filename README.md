@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="./bagen.pdf"><img src="https://img.shields.io/badge/Paper-B31B1B?style=for-the-badge&logoColor=white" alt="Paper"></a>
+  <a href="https://arxiv.org/abs/2606.00198"><img src="https://img.shields.io/badge/Paper-B31B1B?style=for-the-badge&logoColor=white" alt="Paper"></a>
   <a href="https://ragen-ai.github.io/bagen/"><img src="https://img.shields.io/badge/Homepage-1F6FEB?style=for-the-badge&logoColor=white" alt="Homepage"></a>
   <img src="https://img.shields.io/badge/Post-6B7280?style=for-the-badge&logoColor=white" alt="Post">
   <a href="https://huggingface.co/datasets/MLL-Lab/BAGEN"><img src="https://img.shields.io/badge/Data-0F766E?style=for-the-badge&logoColor=white" alt="Data"></a>
@@ -219,11 +219,14 @@ Do not add raw enterprise records to this repository.
 If you find this work useful, please cite:
 
 ```bibtex
-@misc{lin2026bagen,
+@misc{bagen2026,
   title={BAGEN: Are LLM Agents Budget-Aware?},
   author={Yuxiang Lin and Zihan Wang and Mengyang Liu and Yuxuan Shan and Longju Bai and Junyao Zhang and Xing Jin and Boshan Chen and Jinyan Su and Xingyao Wang and Jiaxin Pei and Manling Li},
   year={2026},
-  note={Preprint},
+  eprint={2606.00198},
+  archivePrefix={arXiv},
+  primaryClass={cs.LG},
+  url={https://arxiv.org/abs/2606.00198},
 }
 ```
 
