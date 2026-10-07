@@ -1,4 +1,4 @@
-<h1 align="center">BAGEN</h1>
+<h1 align="center">BAGEN: Budget-Awaare Agents</h1>
 <h3 align="center"><em>Are LLM agents budget-aware?</em></h3>
 
 <p align="center"><img src="public/BAGEN_logo.png" width="260px" alt="BAGEN logo" /></p>
