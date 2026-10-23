@@ -13,7 +13,7 @@
 <p align="center">
   <a href="https://arxiv.org/abs/2606.00198"><img src="https://img.shields.io/badge/Paper-B31B1B?style=for-the-badge&logoColor=white" alt="Paper"></a>
   <a href="https://ragen-ai.github.io/bagen/"><img src="https://img.shields.io/badge/Homepage-1F6FEB?style=for-the-badge&logoColor=white" alt="Homepage"></a>
-  <img src="https://img.shields.io/badge/Post-6B7280?style=for-the-badge&logoColor=white" alt="Post">
+  <a href="https://x.com/wzenus/status/2060397732846612489"><img src="https://img.shields.io/badge/Post-6B7280?style=for-the-badge&logoColor=white" alt="Post"></a>
   <a href="https://huggingface.co/datasets/MLL-Lab/BAGEN"><img src="https://img.shields.io/badge/Data-0F766E?style=for-the-badge&logoColor=white" alt="Data"></a>
 </p>
 
@@ -26,9 +26,17 @@
 
 ## News
 
+- **2026.07.** Workshop versions titled *Towards Budget-Aware Agents* were presented at the ICML 2026 [RLxF: RL from World Feedback](https://icml.cc/virtual/2026/78139) and [Agents in the Wild](https://icml.cc/virtual/2026/67798) workshops.
 - **2026.05.27.** We are excited to release **BAGEN**!
 
 ## About
+
+A **budget-aware agent** treats its budget (tokens, money, or time) as an active
+control signal, not as a cost measured only after execution: while it works on a
+task, it predicts an upper and lower bound on the remaining cost and raises an
+alert when the task is unlikely to finish within budget. BAGEN, short for
+Budget-Aware Agent, measures and trains this ability in LLM agents. Project page:
+https://ragen-ai.github.io/bagen/
 
 BAGEN targets progressive budget estimation in long-horizon agent rollouts. At
 each prefix of an interaction, a model is asked to estimate whether the agent can
