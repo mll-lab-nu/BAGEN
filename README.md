@@ -31,12 +31,16 @@
 
 ## About
 
-A **budget-aware agent** treats its budget (tokens, money, or time) as an active
-control signal, not as a cost measured only after execution: while it works on a
-task, it predicts an upper and lower bound on the remaining cost and raises an
-alert when the task is unlikely to finish within budget. BAGEN, short for
-Budget-Aware Agent, measures and trains this ability in LLM agents. Project page:
-https://ragen-ai.github.io/bagen/
+**BAGEN (Budget-Aware Agent)** is a benchmark and training framework for
+budget-aware LLM agents. A **budget-aware agent** treats its budget (tokens,
+money, or time) as an active control signal, not as a cost measured only after
+execution: while it works on a task, it predicts an upper and lower bound on the
+remaining cost and raises an alert when the task is unlikely to finish within
+budget. BAGEN measures and trains this ability in LLM agents.
+
+- Paper: [BAGEN: Are LLM Agents Budget-Aware?](https://arxiv.org/abs/2606.00198) ([Hugging Face paper page](https://huggingface.co/papers/2606.00198))
+- Project page: https://ragen-ai.github.io/bagen/
+- Dataset: https://huggingface.co/datasets/MLL-Lab/BAGEN
 
 BAGEN targets progressive budget estimation in long-horizon agent rollouts. At
 each prefix of an interaction, a model is asked to estimate whether the agent can
