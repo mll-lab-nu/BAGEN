@@ -38,22 +38,9 @@ execution: while it works on a task, it predicts an upper and lower bound on the
 remaining cost and raises an alert when the task is unlikely to finish within
 budget. BAGEN measures and trains this ability in LLM agents.
 
-BAGEN is a benchmark for **agent cost estimation**: instead of counting an
-agent's spend after the run, it asks the agent itself to predict its remaining
-token cost (or money, time, and warehouse capacity) mid-task. Questions it answers:
-
-- **Can LLM agents predict their own token cost?** Only partly. All twenty
-  model-environment pairs underestimate their remaining budget more often than
-  they overestimate it, and on failed runs models still predict the task is
-  feasible more than 70% of the time after 60% of the budget is spent.
-- **Does agent early stopping save tokens?** Yes, in most settings. Across the
-  five models tested, stopping when the model predicts the task is impossible
-  saves 28-64% of tokens on failed trajectories (depending on the model), at a
-  cost of 1.6 to 4.2 percentage points in success rate. Savings are largest on
-  Warehouse and SWE-bench and near zero on Search-R1.
-- **Can token budget estimation be trained?** Partly. On Sokoban, SFT raises
-  Qwen-7B feasibility accuracy from 25.5% to roughly 90%, but interval coverage
-  reaches only 47% after SFT+RL.
+Unlike a token budget limit enforced from outside the agent, BAGEN asks the
+agent itself to estimate its remaining cost mid-task, for its own tokens and for
+money, time, and warehouse capacity.
 
 - Paper: [BAGEN: Are LLM Agents Budget-Aware?](https://arxiv.org/abs/2606.00198) ([Hugging Face paper page](https://huggingface.co/papers/2606.00198))
 - Project page: https://ragen-ai.github.io/bagen/
